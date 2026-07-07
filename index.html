@@ -62,6 +62,12 @@ nav.sc{background:rgba(6,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px
 .nv a:hover{color:#fff;}
 .nc{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.22);padding:.6rem 1.5rem;font-family:'Raleway';font-size:8.5px;font-weight:700;letter-spacing:2.5px;cursor:pointer;transition:all .25s;}
 .nc:hover{background:#fff;color:var(--navy);}
+nav.inverted{background:rgba(245,246,248,.96)!important;border-bottom:1px solid rgba(6,9,15,.06);}
+nav.inverted .nav-logo{filter:invert(1) brightness(.35);}
+nav.inverted .nv a{color:rgba(6,9,15,.55);}
+nav.inverted .nv a:hover{color:#06090f;}
+nav.inverted .nc{color:#06090f;border-color:rgba(6,9,15,.3);}
+nav.inverted .nc:hover{background:#06090f;color:#fff;}
 
 /* HERO */
 .hero{min-height:100vh;position:relative;overflow:hidden;background:#06090f;display:flex;flex-direction:column;align-items:center;justify-content:center;}
@@ -103,7 +109,7 @@ nav.sc{background:rgba(6,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px
   position:absolute;inset:0;z-index:10;
   display:flex;flex-direction:column;align-items:center;
   justify-content:flex-start;
-  padding:4rem 2rem 0;text-align:center;
+  padding:5.8rem 2rem 0;text-align:center;
   pointer-events:none;
 }
 .hero-inner button{pointer-events:auto;}
@@ -2537,7 +2543,7 @@ nav.sc{background:rgba(6,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px
 .process-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--off);border:1.5px solid rgba(26,39,70,0.18);transition:border-color .4s ease,background .4s ease,box-shadow .4s ease;z-index:2;}
 .process-dot.lit{border-color:var(--blue);background:var(--blue);box-shadow:0 0 10px rgba(22,66,93,0.25);}
 .process-steps{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:0;background:rgba(26,39,70,0.07);}
-.process-step{background:var(--off);padding:2.8rem 2.2rem;display:flex;flex-direction:column;border-top:2px solid transparent;position:relative;overflow:hidden;cursor:default;opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease,background .3s ease,border-color .3s ease;}
+.process-step{background:var(--off);padding:2.8rem 2.2rem;display:flex;flex-direction:column;border-top:2px solid transparent;position:relative;overflow:hidden;cursor:default;opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s ease,background .3s ease,border-color .3s ease;}
 .process-step.visible{opacity:1;transform:translateY(0);}
 .process-step:hover{background:#ebebee;border-top-color:var(--blue);}
 .ps-num{font-size:52px;font-weight:900;letter-spacing:-3px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(26,39,70,0.12);margin-bottom:1.8rem;transition:-webkit-text-stroke-color .3s ease;}
@@ -2906,7 +2912,7 @@ footer{background:#0a1828;padding:2.8rem 4rem;display:flex;align-items:center;ju
   </div>
 
   <!-- Legend -->
-  <div id="hc-legend" style="position:absolute;bottom:5.5rem;left:50%;transform:translateX(-50%);
+  <div id="hc-legend" style="position:absolute;bottom:8.5rem;left:50%;transform:translateX(-50%);
     display:flex;gap:2.5rem;z-index:8;pointer-events:none;align-items:center;">
     <div style="display:flex;align-items:center;gap:.55rem;">
       <div style="width:22px;height:2.5px;background:#fff;border-radius:2px;
@@ -3112,6 +3118,16 @@ function draw(){
   });
   ctx.setLineDash([]);
 
+  // ── AXIS HEADERS (clarify which side belongs to which line) ──
+  ctx.font='800 9px Raleway,sans-serif';
+  ctx.textAlign='left';
+  ctx.fillStyle='rgba(255,255,255,.85)';
+  ctx.fillText('UDI (MXN)', pL, pT-10);
+  ctx.textAlign='right';
+  ctx.fillStyle='rgba(56,189,248,.9)';
+  ctx.fillText('USD (MXN)', W-pR, pT-10);
+  ctx.textAlign='center';
+
   // ── YEAR LABELS ──
   ctx.font='700 9px Raleway,sans-serif';ctx.textAlign='center';
   yearIdxs.forEach(function(idx){
@@ -3315,6 +3331,10 @@ setTimeout(function(){ resize(); loop(); fetchLive(); },300);
       Blindamos tu patrimonio en México y
       <strong>diversificamos tu estructura financiera global.</strong>
     </h1>
+  </div>
+
+  <div style="position:absolute;bottom:3.3rem;left:0;right:0;display:flex;justify-content:center;z-index:9;pointer-events:none;">
+    <button class="btn-p" style="pointer-events:auto;" onclick="window.open('https://calendly.com/joinroca','_blank')">AGENDA UNA LLAMADA</button>
   </div>
 
   <div class="hero-scroll">
@@ -4942,6 +4962,17 @@ window.addEventListener('load', ()=>{
 // ── NAV + REVEAL ──
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>50));
+(function(){
+  const heroEl=document.getElementById('hero');
+  if(!heroEl)return;
+  const navEl=document.getElementById('nav');
+  const heroObs=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      navEl.classList.toggle('inverted', !entry.isIntersecting);
+    });
+  },{threshold:0,rootMargin:'-72px 0px 0px 0px'});
+  heroObs.observe(heroEl);
+})();
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
