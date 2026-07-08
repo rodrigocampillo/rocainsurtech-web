@@ -5251,13 +5251,13 @@ if (worldSec) partObs.observe(worldSec);
 
   window.showMain = function(){
     // Hide ALL frames
-    ['calc-frame','faq-frame','priv-frame','term-frame'].forEach(function(id){
+    ['calc-frame','faq-frame','priv-frame','term-frame','diag-frame'].forEach(function(id){
       var f = document.getElementById(id);
       if(f) f.style.display = 'none';
     });
     // Show all main elements
     document.querySelectorAll('body > *').forEach(function(el){
-      if(['calc-frame','faq-frame','priv-frame','term-frame'].indexOf(el.id) > -1) return;
+      if(['calc-frame','faq-frame','priv-frame','term-frame','diag-frame'].indexOf(el.id) > -1) return;
       el.style.display = '';
     });
     document.body.style.overflow = '';
